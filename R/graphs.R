@@ -270,7 +270,7 @@ findSegments <- function(features, cores = 1)
     geneIDs_2 <- as.integer(names(which(geneID_n_branch > 2)))
     list_segments_2 <- mclapply(geneIDs_2, findSegmentsPerGene, g = g,
         mc.cores = cores)
-    segments_2 <- do.call(c, list_segments_2)
+    segments_2 <- IntegerList(do.call(c, list_segments_2))
 
     segments <- c(segments_1, segments_2) 
         
@@ -378,6 +378,14 @@ findTxVariants <- function(features, maxnvariant = 20, annotate_events = TRUE,
     } 
 
     variants <- findTxVariantsFromSGFeatures(features, maxnvariant, cores)
+
+    if (length(variants) == 0) {
+
+        warning("features do not include any alternative transcript
+            events, no transcript variants identified")
+        return(variants)
+
+    }
     
     if (annotate_events) {
 
