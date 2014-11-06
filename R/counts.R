@@ -475,7 +475,7 @@ representativeFeatures <- function(variant_info, features,
 collapseRows <- function(x, list_i, fun = sum)
 {
 
-    y <- matrix(NA, nrow = length(list_i), ncol = ncol(x))
+    y <- matrix(NA_integer_, nrow = length(list_i), ncol = ncol(x))
     
     j <- which(elementLengths(list_i) == 1)
 
@@ -520,18 +520,18 @@ getVariantFreq <- function(SE)
     i_start <- which(informative_start & !informative_end)
     i_end <- which(!informative_start & informative_end)
 
-    U <- matrix(NA, nrow = nrow(SE), ncol = ncol(SE))
+    U <- matrix(NA_integer_, nrow = nrow(SE), ncol = ncol(SE))
     U[i_both, ] <- U_start[i_both, ] + U_end[i_both, ]
     U[i_start, ] <- U_start[i_start, ]
     U[i_end, ] <- U_end[i_end, ]
 
-    V <- matrix(NA, nrow = nrow(SE), ncol = ncol(SE))
+    V <- matrix(NA_integer_, nrow = nrow(SE), ncol = ncol(SE))
     V[i_both, ] <- V_start[i_both, ] + V_end[i_both, ]
     V[i_start, ] <- V_start[i_start, ]
     V[i_end, ] <- V_end[i_end, ]
 
     X <- U/V
-    X[is.na(X)] <- NA
+    X[is.na(X)] <- NA_real_
 
     assay(SE, "variantFreq") <- X
         
