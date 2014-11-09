@@ -878,20 +878,23 @@ expandPath <- function(x, return_full = FALSE)
     
     while (length(grep("(", x, fixed = TRUE)) > 0) {
 
-        ## find first inner-most event
-        m <- regexpr("\\((\\w|,|\\|)+\\)", x)
+        z <- maskInnerEvents(x)
+      
+        ## find event
+        m <- regexpr("\\([^\\(\\)]+\\)", z)
         l <- attr(m, "match.length")
         i <- which(m != -1)
         
         ## split at event
-        u <- substr(x[i], 1, m[i] - 1)
-        b <- substr(x[i], m[i] + 1, m[i] + l[i] - 2)
-        v <- substr(x[i], m[i] + l[i], nchar(x)[i])
+        u <- substr(z[i], 1, m[i] - 1)
+        b <- substr(z[i], m[i] + 1, m[i] + l[i] - 2)
+        v <- substr(z[i], m[i] + l[i], nchar(z)[i])
 
         ## expand event
         b <- strsplit(b, "|", fixed = TRUE)
         n <- elementLengths(b)
         y <- paste0(rep(u, n), unlist(b), rep(v, n))
+        y <- unmaskEvents(y)
         y_f <- x_f[i][togroup(b)]
         y_d <- pc(x_d[i][togroup(b)], unlist(b))
         y_d <- as(y_d, "CompressedCharacterList")
@@ -916,6 +919,63 @@ expandPath <- function(x, return_full = FALSE)
     
     return(out)
     
+}
+
+maskInnerEvents <- function(x)
+{
+
+    pattern <- "\\([^\\(\\)]+\\)"
+    m <- regexpr(pattern, x)
+    done <- rep(FALSE, length(x))
+    done[m == -1] <- TRUE
+    
+    while (!all(done)) {
+
+        i <- which(!done)
+        m <- regexpr(pattern, x[i])
+        l <- attr(m, "match.length")
+
+        p1 <- m
+        p2 <- m + l - 1
+        
+        substr(x[i], p1, p1) <- "["
+        substr(x[i], p2, p2) <- "]"
+
+        m2 <- regexpr(pattern, x[i])
+    
+        i_done <- which(m2 == -1)
+        i_mask <- which(m2 != -1)
+
+        if (length(i_done) > 0) {
+
+            done[i][i_done] <- TRUE
+            substr(x[i][i_done], p1[i_done], p1[i_done]) <- "("
+            substr(x[i][i_done], p2[i_done], p2[i_done]) <- ")"
+
+        }
+
+        if (length(i_mask) > 0) {
+
+            substr(x[i][i_mask], p1[i_mask], p2[i_mask]) <- gsub("|", ":",
+                substr(x[i][i_mask], p1[i_mask], p2[i_mask]), fixed = TRUE)
+      
+        }
+    
+    }
+
+    return(x)
+  
+}
+
+unmaskEvents <- function(x)
+{
+
+    x <- gsub("[", "(", x, fixed = TRUE)
+    x <- gsub("]", ")", x, fixed = TRUE)
+    x <- gsub(":", "|", x, fixed = TRUE)
+
+    return(x)
+  
 }
 
 expandSE <- function(SE, eventID = NULL)
