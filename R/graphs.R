@@ -421,7 +421,13 @@ findTxVariantsFromSGFeatures <- function(features, maxnvariant, cores = 1)
         g = g, maxnvariant = maxnvariant, mc.cores = cores)
     variant_info <- DataFrame(do.call(rbind, list_variant_info))
     rownames(variant_info) <- NULL
-    
+
+    if (!is.na(maxnvariant) && nrow(variant_info) == 0) {
+
+        return(TxVariants())
+
+    }
+
     variant_info$eventID <- eventIDs(variant_info)
     variant_info <- variant_info[order(variant_info$eventID), ]
     variant_info$variantID <- seq_len(nrow(variant_info))
@@ -1073,7 +1079,6 @@ reindex <- function(f)
     u <- sort(unique(f))
     u_n <- table(f)[u]
     o <- order(f)
-    g <- f[o]
     i <- as.integer(IRanges(1, u_n))    
     i[match(seq_along(i), o)]
 
