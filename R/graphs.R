@@ -313,7 +313,9 @@ findSGSegmentsPerGene <- function(g, geneID)
     
 }
 
-##' @title Find splice variants from splice graph
+##' Identify splice variants from splice graph.
+##' 
+##' @title Identify splice variants from splice graph
 ##' @param features \code{SGFeatures} object
 ##' @param maxnvariant If more than \code{maxnvariant} variants are
 ##'   identified in an event, the event is skipped, resulting in a warning.
@@ -475,7 +477,7 @@ getRepresentativeFeatureIDs <- function(variant_info, features, start = TRUE)
 {
 
     variant_rep_id <- vector("list", nrow(variant_info))
-    variant_rep_id <- as(variant_rep_id, "CompressedIntegerList")
+    variant_rep_id <- IntegerList(variant_rep_id)
     
     if (start) {
 
@@ -1335,8 +1337,8 @@ expandSGVariantCounts <- function(sgvc, eventID = NULL, maxnvariant = NA,
     segmentID(rd) <- expandString(segmentID(variants_selected),
         eventID(variants_selected), maxnvariant, TRUE)$expanded
     i <- which(elementLengths(expanded$nesting) > 1)
-    featureID5p(rd) <- as(vector("list", length(rd)), "CompressedIntegerList")
-    featureID3p(rd) <- as(vector("list", length(rd)), "CompressedIntegerList")
+    featureID5p(rd) <- IntegerList(vector("list", length(rd)))
+    featureID3p(rd) <- IntegerList(vector("list", length(rd)))
     rd <- annotateSGVariants(rd)
     variantName(rd) <- makeVariantNames(rd)
     rd <- annotatePaths(rd)
@@ -1370,6 +1372,7 @@ expandSGVariantCounts <- function(sgvc, eventID = NULL, maxnvariant = NA,
 ##' and event, respectively. ORDER indicates the total number of
 ##' variants in the same event (e.g. 1/2 refers to the first out of two
 ##' splice variants in the event). TYPE is based on variantType.
+##' 
 ##' @title Create interpretable splice variant names
 ##' @param variants \code{SGVariants} object
 ##' @return Character vector with splice variant names
@@ -1439,7 +1442,7 @@ extractIDs <- function(x)
     x <- gsub("|", ",", x, fixed = TRUE)
     x <- strsplit(x, ",", fixed = TRUE)
     x <- lapply(x, setdiff, "NA")
-    x <- as(x, "CompressedIntegerList")
+    x <- IntegerList(x)
     return(x)
   
 }

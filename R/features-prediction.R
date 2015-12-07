@@ -173,6 +173,9 @@ predictTxFeaturesPerSample <- function(file_bam, which, paired_end,
     
 }
 
+##' Identification of splice junctions and exons for a given chromosome
+##' and strand.
+##' 
 ##' @title Identification of splice junctions and exons for a given
 ##'   chromosome and strand
 ##' @inheritParams predictTxFeaturesPerSample
@@ -224,7 +227,9 @@ predictTxFeaturesPerStrand <- function(file_bam, paired_end, which,
     
 }
 
-##' @title \code{IRanges}-based identification of splice junctions and exons
+##' Ranges-based identification of splice junctions and exons.
+##' 
+##' @title Ranges-based identification of splice junctions and exons
 ##' @inheritParams predictTxFeaturesPerSample
 ##' @param frag_exonic \code{IRangesList} with exonic regions from alignments
 ##' @param frag_intron \code{IRangesList} with introns implied by spliced
@@ -520,7 +525,7 @@ predictExonsInternal <- function(candidates, frag_exonic, frag_intron, relCov,
     if (retain_coverage) {
             
         mcols(exons)$N_splicesite <- candidate_N_splicesite[index]
-        mcols(exons)$coverage <- candidate_coverage[index]
+        mcols(exons)$coverage <- IntegerList(candidate_coverage[index])
         
     }
 
@@ -638,8 +643,8 @@ predictExonsTerminal <- function(candidates, frag_exonic, frag_intron, relCov,
     if (retain_coverage) {
             
         mcols(exons)$N_splicesite <- as(N_splicesite, "CompressedIntegerList")
-        mcols(exons)$coverage <- coverage[setNames(split(ir, seq_along(ir)),
-            NULL)]
+        mcols(exons)$coverage <- IntegerList(coverage[
+            setNames(split(ir, seq_along(ir)), NULL)])
             
     }
         

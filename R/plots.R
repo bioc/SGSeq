@@ -864,6 +864,8 @@ addAlpha <- function(col, alpha)
     
 }
 
+##' Plot splice graph and heatmap of expression values.
+##' 
 ##' @title Plot splice graph and heatmap of expression values
 ##' @inheritParams plotSpliceGraph
 ##' @param x \code{SGFeatureCounts} object
@@ -970,6 +972,8 @@ plotFeatures <- function(x, geneID = NULL, geneName = NULL,
 
 }
 
+##' Plot splice graph and heatmap of splice variant frequencies.
+##' 
 ##' @title Plot splice graph and heatmap of splice variant frequencies
 ##' @inheritParams plotSpliceGraph
 ##' @inheritParams plotFeatures
@@ -1386,6 +1390,7 @@ restrictFeatures <- function(x, geneID = NULL, eventID = NULL, which = NULL,
 
 ##' Plot read coverage and splice junction read counts for an individual
 ##' sample or averaged across samples.
+##' 
 ##' @title Plot read coverage and splice junction read counts
 ##' @inheritParams plotSpliceGraph
 ##' @param x \code{SGFeatureCounts} or \code{SGFeatures} object.

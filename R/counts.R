@@ -112,8 +112,8 @@ getSGFeatureCountsPerStrand <- function(features, file_bam, paired_end,
     if (retain_coverage) {
 
         counts <- DataFrame(N = N)
-        counts$N_splicesite <- IntegerList(as.integer())
-        counts$coverage <- RleList(as.integer(), compress = TRUE)
+        counts$N_splicesite <- IntegerList(vector("list", nrow(counts)))
+        counts$coverage <- IntegerList(vector("list", nrow(counts)))
         
         if (length(i_J) > 0) {
         
@@ -126,8 +126,8 @@ getSGFeatureCountsPerStrand <- function(features, file_bam, paired_end,
             
             counts$N_splicesite[i_E] <- splicesiteCounts(ir[i_E],
                 frag_exonic, frag_intron, "exon")
-            counts$coverage[i_E] <- exonCoverage(ir[i_E],
-                E_index, frag_exonic)
+            counts$coverage[i_E] <- IntegerList(exonCoverage(ir[i_E],
+                E_index, frag_exonic))
             
         }
 
@@ -195,6 +195,7 @@ convertSlots <- function(x)
 }
 
 ##' Create \code{SGFeatureCounts} object from rowRanges, colData and counts.
+##' 
 ##' @title Create \code{SGFeatureCounts} object
 ##' @param rowRanges An \code{SGFeatures} object
 ##' @param colData Data frame with sample information 
@@ -641,7 +642,7 @@ getSGVariantCountsPerStrand <- function(variants, features,
     i_J <- which(type == "J")
     i_S <- which(type %in% c("spliceL", "spliceR"))
 
-    ir_index <- as(vector("list", length(ir)), "CompressedIntegerList")
+    ir_index <- IntegerList(vector("list", length(ir)))
     
     if (length(i_J) > 0) {
 
@@ -676,17 +677,15 @@ getSGVariantCountsPerStrand <- function(variants, features,
         i <- match(unlist(f), featureID(features))
         g <- togroup(f)
 
-        tmp <- as(tapply(unlist(ir_index[i]),
-            vid[g][togroup(ir_index[i])], unique,
-            simplify = FALSE), "CompressedIntegerList")
+        tmp <- IntegerList(tapply(unlist(ir_index[i]),
+            vid[g][togroup(ir_index[i])], unique, simplify = FALSE))
         countsVariant <- elementLengths(tmp)[match(vid, names(tmp))]
         vid_uninformative <- vid[elementLengths(f) == 0]
         countsVariant[vid %in% vid_uninformative] <- NA_integer_
         counts[, paste0("countsVariant", s)] <- countsVariant
         
-        tmp <- as(tapply(unlist(ir_index[i]),
-            eid[g][togroup(ir_index[i])], unique,
-            simplify = FALSE), "CompressedIntegerList")
+        tmp <- IntegerList(tapply(unlist(ir_index[i]),
+            eid[g][togroup(ir_index[i])], unique, simplify = FALSE))
         countsTotal <- elementLengths(tmp)[match(eid, names(tmp))]
         eid_uninformative <- names(which(tapply(
             elementLengths(f) == 0, eid, any)))

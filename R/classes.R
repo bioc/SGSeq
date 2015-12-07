@@ -192,8 +192,7 @@ setClass(
         type = "factor",
         txName = "CharacterList",
         geneName = "CharacterList"),
-    contains = "GRanges",
-    validity = validTxFeatures
+    contains = "GRanges"
 )
 
 setClass(
@@ -206,43 +205,32 @@ setClass(
         geneID = "integer",
         txName = "CharacterList",
         geneName = "CharacterList"),
-    contains = "GRanges",
-    validity = validSGFeatures
+    contains = "GRanges"
 )
 
 setClass(
-     Class = "SGSegments",
-     slots = c(unlistData = "SGFeatures"),
-     contains = "GRangesList",
-     validity = validSGSegments
+    Class = "SGSegments",
+    slots = c(unlistData = "SGFeatures"),
+    contains = "GRangesList"
 )
 
 setClass(
     Class = "SGVariants",
     slots = c(unlistData = "SGFeatures"),
-    contains = "GRangesList",
-    validity = validSGVariants
+    contains = "GRangesList"
 )
 
 setClass(
     Class = "SGFeatureCounts",
     slots = c(rowRanges = "SGFeatures"),
-    contains = "RangedSummarizedExperiment",
-    validity = validSGFeatureCounts
+    contains = "RangedSummarizedExperiment"
 )
 
 setClass(
     Class = "SGVariantCounts",
     slots = c(rowRanges = "SGVariants"),
-    contains = "RangedSummarizedExperiment",
-    validity = validSGVariantCounts
+    contains = "RangedSummarizedExperiment"
 )
-
-setClassUnion("Features", c("TxFeatures", "SGFeatures"))
-
-setClassUnion("Paths", c("SGSegments", "SGVariants"))
-
-setClassUnion("Counts", c("SGFeatureCounts", "SGVariantCounts"))
 
 setClass(
     Class = "TxVariants",
@@ -253,6 +241,19 @@ setClass(
     Class = "TxVariantCounts",
     contains = "SGVariantCounts"
 )
+
+setClassUnion("Features", c("TxFeatures", "SGFeatures"))
+setClassUnion("Paths", c("SGSegments", "SGVariants"))
+setClassUnion("Counts", c("SGFeatureCounts", "SGVariantCounts"))
+
+## validity checks
+
+setValidity2("TxFeatures", validTxFeatures)
+setValidity2("SGFeatures", validSGFeatures)
+setValidity2("SGSegments", validSGSegments)
+setValidity2("SGVariants", validSGVariants)
+setValidity2("SGFeatureCounts", validSGFeatureCounts)
+setValidity2("SGVariantCounts", validSGVariantCounts)
 
 ## Methods for extraColumnSlotNames
 
