@@ -277,7 +277,9 @@ predictSpliced <- function(frag_exonic, frag_intron, min_junction_count,
                     "predictSpliced",
                     sample_name, 
                     paste("skipping", excl_str))
-            
+
+                if (length(junctions) == 0) { return() }
+                
             }
 
         }
