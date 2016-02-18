@@ -106,6 +106,8 @@ addDummyNodes <- function(v, E, J, tx_view)
 
     }
 
+    v <- v[order(co2gr(v$coordinates)), ]
+
     return(v)
 
 }
@@ -1011,14 +1013,6 @@ plotVariants <- function(x, eventID = NULL, tx_view = FALSE,
 
     if (nrow(x) == 0) { return() }    
 
-    if (expand_variants) {
-    
-        x <- expandSGVariantCounts(x, eventID)
-
-    }
-
-    X <- transform(variantFreq(x))
-
     variant_not_quantifiable <- elementLengths(featureID5p(x)) == 0 &
         elementLengths(featureID3p(x)) == 0
     event_not_quantifiable <- tapply(variant_not_quantifiable, eventID(x),
@@ -1033,6 +1027,14 @@ plotVariants <- function(x, eventID = NULL, tx_view = FALSE,
         warning("one or more splice events could not be quantified")
 
     }
+
+    if (expand_variants) {
+    
+        x <- expandSGVariantCounts(x, eventID)
+
+    }
+
+    X <- transform(variantFreq(x))
 
     if (!is.null(RowSideColors) && !is.list(RowSideColors)) {
 
