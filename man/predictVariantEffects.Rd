@@ -45,7 +45,8 @@ The effect of a splice variant is predicted for individual
 protein-coding transcripts.
 }
 \examples{
-require(BSgenome.Hsapiens.UCSC.hg19)
+library(BSgenome.Hsapiens.UCSC.hg19)
+library(GenomeInfoDb)  # for seqlevelsStyle()
 seqlevelsStyle(Hsapiens) <- "NCBI"
 predictVariantEffects(sgv_pred, tx, Hsapiens)
 }

@@ -78,6 +78,7 @@ Transcript annotation can be obtained from a *TxDb* object or imported from GFF 
 
 ```{r, message = FALSE}
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+library(GenomeInfoDb)  # for keepSeqlevels() and seqlevelsStyle()
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 txdb <- keepSeqlevels(txdb, "chr16")
 seqlevelsStyle(txdb) <- "NCBI"

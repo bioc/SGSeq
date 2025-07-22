@@ -1,7 +1,7 @@
 test_predictVariantEffects <- function()
 {
-
-    require(BSgenome.Hsapiens.UCSC.hg19)
+    library(BSgenome.Hsapiens.UCSC.hg19)
+    library(GenomeInfoDb)  # for seqlevelsStyle()
     seqlevelsStyle(Hsapiens) <- "NCBI"
 
     current <- predictVariantEffects(sgv_pred, tx, Hsapiens, FALSE)

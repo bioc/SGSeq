@@ -15,8 +15,9 @@ importFrom(AnnotationDbi, select)
 importFrom(Biostrings, DNAString, DNAStringSet, getSeq, translate)
 importFrom(GenomicFeatures, cdsBy, exonsBy, mapFromTranscripts,
     mapToTranscripts)
-importFrom(GenomeInfoDb, keepSeqlevels, seqinfo, seqlengths, seqlevels)
+importFrom(GenomeInfoDb, keepSeqlevels)
 importFrom(RUnit, checkIdentical, checkTrue)
+importFrom(Seqinfo, seqinfo, seqlengths, seqlevels)
 importFrom(grDevices, col2rgb, colorRampPalette, dev.size, rgb)
 importFrom(graphics, axis, frame, layout, mtext, par, plot, polygon, rect,
     text)

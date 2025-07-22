@@ -639,7 +639,7 @@ setMethod("updateObject", "SGVariants", function(object, ..., verbose = FALSE) {
         "txName",
         "geneName")
 
-    if (all(required %in% current)) return(object)
+    if (all(required %in% current)) return(callNextMethod())
 
     if (verbose) {
 
@@ -710,7 +710,7 @@ setMethod("updateObject", "SGVariantCounts", function(object, ..., verbose = FAL
         "countsEvent3p",
         "variantFreq")
 
-    if (all(required %in% current)) return(object)
+    if (all(required %in% current)) return(callNextMethod())
 
     if (verbose) {
 

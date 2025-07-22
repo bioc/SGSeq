@@ -27,7 +27,8 @@
 ##'   Coordinates for the last junction in a transcript refer to the
 ##'   last base of the second-to-last exon.
 ##' @examples
-##' require(BSgenome.Hsapiens.UCSC.hg19)
+##' library(BSgenome.Hsapiens.UCSC.hg19)
+##' library(GenomeInfoDb)  # for seqlevelsStyle()
 ##' seqlevelsStyle(Hsapiens) <- "NCBI"
 ##' predictVariantEffects(sgv_pred, tx, Hsapiens)
 ##' @author Leonard Goldstein

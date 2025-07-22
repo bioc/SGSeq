@@ -4,6 +4,7 @@
 
 library(SGSeq)
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+library(GenomeInfoDb)  # for keepSeqlevels() and seqlevelsStyle()
 
 si_file_bam <- si$file_bam
 
